@@ -147,7 +147,7 @@ class Signup1(models.Model):
 
 
 class TeacherSignup(models.Model):
-    empid = models.CharField(max_length=10,primary_key=True)
+    empid = models.CharField(max_length=50,primary_key=True)
     ename = models.CharField(max_length=50)
     epass = models.CharField(max_length=150)
     esubject = models.CharField(max_length=50)
@@ -158,7 +158,7 @@ class TeacherSignup(models.Model):
     
     
 class Teacher(models.Model):
-    empid = models.CharField(max_length=10,primary_key=True)
+    empid = models.CharField(max_length=50,primary_key=True)
     ename = models.CharField(max_length=50)
     esubject = models.CharField(max_length=50)
     def __str__(self):
