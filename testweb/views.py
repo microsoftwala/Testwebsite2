@@ -51,7 +51,6 @@ def signupteacher(request):
             teacher = Teacher(empid=email,ename=name,esubject=subject)
             teachersignup.save()
             teacher.save()
-            return render(request,'signinteacher.html')
     return render(request,'signupteacher.html',context=context)
 
 
