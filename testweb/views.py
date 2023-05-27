@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect
 from django.contrib.auth.hashers import make_password,check_password
 from testweb.models import Signup
@@ -109,7 +109,7 @@ def signin(request):
             request.session['Email'] = candidate[0].srollno
             request.session['Pass'] = candidate[0].spass
             context = {'rollno':email}
-            return render(request,'home.html')
+             return HttpResponseRedirect('home')
         else:
             count=1
             context = {'student':passs,'yes':"Wrong Password or Email",'count':count}
