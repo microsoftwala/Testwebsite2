@@ -39,11 +39,10 @@ def signupteacher(request):
         email = request.POST['Email']
         password = request.POST['Pass']
         subject = request.POST['Subject']
-        print(name,email,password,subject)
         password = make_password(password)
-        print(name,email,password,subject)
         
         if(len(Signup.objects.filter(srollno=email)) or len(TeacherSignup.objects.filter(empid=email))):
+            print("Inside")
             context = {'success':False}
         else:
             context = {'success':True}
@@ -52,6 +51,7 @@ def signupteacher(request):
             teachersignup.save()
             teacher.save()
             print(email,subject,name)
+        print("Outside") 
     return render(request,'signupteacher.html',context=context)
 
 
