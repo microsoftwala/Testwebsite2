@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.hashers import make_password,check_password
 from testweb.models import Signup
@@ -51,7 +51,7 @@ def signupteacher(request):
             teacher = Teacher(empid=email,ename=name,esubject=subject)
             teachersignup.save()
             teacher.save()
-            return HttpResponseRedirect('signinteacher')
+            return render(request,'signinteacher.html')
     return render(request,'signupteacher.html',context=context)
 
 
@@ -68,7 +68,7 @@ def signinteacher(request):
         if(len(TeacherSignup.objects.filter(empid = email))):
             candiate_password_from_database = TeacherSignup.objects.get(empid = email)
         else:
-            return HttpResponseRedirect('signupteacher')
+            return render (request,'signupteacher.html')
         
         check = check_password(password,candiate_password_from_database.epass)
         candidate = TeacherSignup.objects.filter(empid=email)
@@ -77,7 +77,9 @@ def signinteacher(request):
             request.session['TeacherEmail'] = candidate[0].empid
             request.session['Pass'] = candidate[0].epass
             # print("hi")
-            return HttpResponseRedirect('hometeacher')
+            teacher_name = TeacherSignup.objects.get(empid=email)
+            context = {'empno':request.session['TeacherEmail'],'teacher':teacher_name.ename,'subject':teacher_name.esubject}
+            return render(request,'hometeacher.html',context)
         else:
             context = {'message':'Your email or password was wrong','success':True}
             return render(request,'signinteacher.html',context)
@@ -101,15 +103,16 @@ def signin(request):
         if(len(Signup.objects.filter(srollno=email))):
             candiate_password_from_database = Signup.objects.get(srollno = email)
         else:
-            return HttpResponseRedirect('signup')
+            return render(request,'signup.html')
         # print(make_password(passwords))
         password = check_password(passwords,candiate_password_from_database.spass)
         candidate = Signup.objects.filter(srollno=email)
         if(len(Signup.objects.filter(srollno=email)) and password==True):
             request.session['Email'] = candidate[0].srollno
             request.session['Pass'] = candidate[0].spass
-            context = {'rollno':email}
-            return HttpResponseRedirect('home')
+            student_name = Signup.objects.get(srollno=email).sname
+            context = {'rollno':request.session['Email'],'studentname':student_name}
+            return render(request,'home.html',context)
         else:
             count=1
             context = {'student':passs,'yes':"Wrong Password or Email",'count':count}
@@ -174,7 +177,7 @@ def forget(request):
             return render(request,'forget.html',context)
         
         else:
-            return HttpResponseRedirect('signup')
+            return render(request,'signup.html')
     return render(request,'forget.html')
   
 
@@ -212,9 +215,9 @@ def confirm(request):
                 object.save()
                 return render(request,'confirm.html')
             else:
-                return HttpResponseRedirect('notconfirm')
+                return render(request,'notconfirm.html')
     else:
-        return HttpResponseRedirect('linkexpired')
+        return render(request,'linkexpired.html')
 
 
 
@@ -254,7 +257,7 @@ def changepassword(request,token):
 #home page 
 def home(request):
     if 'Email' not in request.session.keys():
-        return HttpResponseRedirect('signin')
+        return render(request,'signin.html')
     else:
         print(request.session.get('Email'))
         student_name = Student.objects.get(srollno=request.session['Email'])
@@ -268,7 +271,7 @@ def home(request):
 #home page 
 def hometeacher(request):
     if 'TeacherEmail' not in request.session.keys():
-        return HttpResponseRedirect('signinteacher')
+        return render(request,'signinteacher.html')
     else:
         print(request.session.get('TeacherEmail'))
         teacher_name = TeacherSignup.objects.get(empid=request.session['TeacherEmail'])
@@ -282,7 +285,7 @@ def hometeacher(request):
 #paperset for student
 def paperset(request):
     if 'TeacherEmail' not in request.session.keys():
-        return HttpResponseRedirect('signinteacher')
+        return render(request,'signinteacher.html')
     else:
         teacher_name = TeacherSignup.objects.get(empid=request.session['TeacherEmail'])
         total_number_of_question=0
@@ -345,7 +348,7 @@ def paperset(request):
 #show all question
 def totalquestion(request):
     if 'TeacherEmail' not in request.session.keys():    
-        return HttpResponseRedirect('signinteacher')
+        return render(request,'signinteacher.html')
     else:
         teacher_name = TeacherSignup.objects.get(empid=request.session['TeacherEmail'])
         context = {}
@@ -371,7 +374,7 @@ def totalquestion(request):
 #marks can see by teacher also
 def marks(request):
     if 'TeacherEmail' not in request.session.keys():    
-        return HttpResponseRedirect('signinteacher')
+        return render(request,'signinteacher.html')
     else:
         teacher_name = TeacherSignup.objects.get(empid=request.session['TeacherEmail'])
         context = {}
@@ -395,9 +398,11 @@ def marks(request):
 
 #logout student user here 
 def logout(request):   
+    if 'Email' not in request.session.keys():    
+        return render(request,'signin.html')
     del request.session['Email']
     del request.session['Pass']
-    return HttpResponseRedirect('signup')
+    return render(request,'signin.html')
 
 
 
@@ -409,10 +414,12 @@ def front(request):
 
 
 #logout teacher user here
-def logoutteacher(request):   
+def logoutteacher(request): 
+    if 'TeacherEmail' not in request.session.keys():    
+        return render(request,'signinteacher.html')
     del request.session['TeacherEmail']
     del request.session['Pass']
-    return HttpResponseRedirect('signupteacher')
+    return render(request,'signinteacher.html')
 
 
 
@@ -421,7 +428,7 @@ def logoutteacher(request):
 #general knowledge test
 def tests(request):
     if 'Email' not in request.session.keys():
-        return HttpResponseRedirect('signin')
+        return render(request,'signin.html')
     
     n = int(request.GET['n'])
     question = list(Test.objects.all())
@@ -436,7 +443,7 @@ def tests(request):
 #chemistry test
 def chemistrytest(request):
     if 'Email' not in request.session.keys():
-        return HttpResponseRedirect('signin')
+        return render(request,'signin.html')
     
     n = int(request.GET['n'])
     question = list(Chemistry.objects.all())
@@ -452,7 +459,7 @@ def chemistrytest(request):
 #physics test
 def physicstest(request):
     if 'Email' not in request.session.keys():
-        return HttpResponseRedirect('signin')
+        return render(request,'signin.html')
     
     n = int(request.GET['n'])
     question = list(Physics.objects.all())
@@ -468,7 +475,7 @@ def physicstest(request):
 #math test
 def mathtest(request):
     if 'Email' not in request.session.keys():
-        return HttpResponseRedirect('signin')
+        return render(request,'signin.html')
     
     n = int(request.GET['n'])
     question = list(Math.objects.all())
@@ -485,7 +492,7 @@ def mathtest(request):
 #physics
 def physics(request):
     if 'Email' not in request.session.keys():
-        return HttpResponseRedirect('signin')
+        return render(request,'signin.html')
     context = {'rollno':request.session['Email']}
     return render(request,'physics.html',context=context)
 
@@ -496,7 +503,7 @@ def physics(request):
 #chemistry
 def chemistry(request):
     if 'Email' not in request.session.keys():
-        return HttpResponseRedirect('signin')
+        return render(request,'signin.html')
     context = {'rollno':request.session['Email']}
     return render(request,'chemistry.html',context=context)
 
@@ -507,7 +514,7 @@ def chemistry(request):
 #math
 def math(request):
     if 'Email' not in request.session.keys():
-        return HttpResponseRedirect('signin')
+       return render(request,'signin.html')
     context = {'rollno':request.session['Email']}
     return render(request,'math.html',context=context)
 
@@ -518,7 +525,7 @@ def math(request):
 #gs
 def gs(request):
     if 'Email' not in request.session.keys():
-        return HttpResponseRedirect('signin')
+        return render(request,'signin.html')
     context = {'rollno':request.session['Email']}
     return render(request,'gs.html',context=context)
 
@@ -528,7 +535,7 @@ def gs(request):
 #calculate result gs result here
 def calculate(request):
     if 'Email' not in request.session.keys():
-        return HttpResponseRedirect('signin')
+        return render(request,'signin.html')
     total_attempt = 0
     total_right = 0
     total_wrong = 0
@@ -564,7 +571,10 @@ def calculate(request):
     candidate.sattempt +=1
     candidate.spoints += (candidate.spoints)
     candidate.save()
-    return HttpResponseRedirect('result')
+    resultg = Result.objects.filter(resultid=Result.objects.latest('resultid').resultid,username = request.session['Email'])
+    subject = "General Studies"
+    context = {'result':resultg,'rollno':request.session['Email'],'subject':subject}
+    return render(request,'result.html',context)
 
 
 
@@ -574,7 +584,7 @@ def calculate(request):
 #calculate physics result here
 def calculatep(request):
     if 'Email' not in request.session.keys():
-        return HttpResponseRedirect('signin')
+        return render(request,'signin.html')
     total_attempt = 0
     total_right = 0
     total_wrong = 0
@@ -610,7 +620,10 @@ def calculatep(request):
     candidate.sattempt +=1
     candidate.spoints += (candidate.spoints)
     candidate.save()
-    return HttpResponseRedirect('resultp')
+    resultp = PhysicsResult.objects.filter(resultid=PhysicsResult.objects.latest('resultid').resultid,username = request.session['Email'])
+    subject = "Physics"
+    context = {'result':resultp,'rollno':request.session['Email'],'subject':subject}
+    return render(request,'result.html',context)
 
 
 
@@ -620,7 +633,7 @@ def calculatep(request):
 #calculate chemistry result here
 def calculatec(request):
     if 'Email' not in request.session.keys():
-        return HttpResponseRedirect('signin')
+        return render(request,'signin.html')
     total_attempt = 0
     total_right = 0
     total_wrong = 0
@@ -656,7 +669,10 @@ def calculatec(request):
     candidate.sattempt +=1
     candidate.spoints += (candidate.spoints)
     candidate.save()
-    return HttpResponseRedirect('resultc')
+    resultc = ChemistryResult.objects.filter(resultid=ChemistryResult.objects.latest('resultid').resultid,username = request.session['Email'])
+    subject = "Chemistry"
+    context = {'result':resultc,'rollno':request.session['Email'],'subject':subject}
+    return render(request,'result.html',context)
 
 
 
@@ -666,7 +682,7 @@ def calculatec(request):
 #calculate chemistry result here
 def calculatem(request):
     if 'Email' not in request.session.keys():
-        return HttpResponseRedirect('signin')
+        return render(request,'signin.html')
     total_attempt = 0
     total_right = 0
     total_wrong = 0
@@ -702,7 +718,10 @@ def calculatem(request):
     candidate.sattempt +=1
     candidate.spoints += (candidate.spoints)
     candidate.save()
-    return HttpResponseRedirect('resultm')
+    resultm = MathResult.objects.filter(resultid=MathResult.objects.latest('resultid').resultid,username = request.session['Email'])
+    subject = "Math"
+    context = {'result':resultm,'rollno':request.session['Email'],'subject':subject}
+    return render(request,'result.html',context)
 
 
 
@@ -712,7 +731,7 @@ def calculatem(request):
 #current test result for gs here 
 def result(request):
     if 'Email' not in request.session.keys():
-        return HttpResponseRedirect('signin')
+        return render(request,'signin.html')
     # fetch latest result from result table
     result = Result.objects.filter(resultid=Result.objects.latest('resultid').resultid,username = request.session['Email'])
     subject = 'General Studies'
@@ -725,7 +744,7 @@ def result(request):
 #current test result for chemistry here 
 def resultc(request):
     if 'Email' not in request.session.keys():
-        return HttpResponseRedirect('signin')
+        return render(request,'signin.html')
     # fetch latest result from result table
     result = ChemistryResult.objects.filter(resultid=ChemistryResult.objects.latest('resultid').resultid,username = request.session['Email'])
     subject = 'Chemistry'
@@ -739,7 +758,7 @@ def resultc(request):
 #current test result for gs here 
 def resultp(request):
     if 'Email' not in request.session.keys():
-        return HttpResponseRedirect('signin')
+        return render(request,'signin.html')
     # fetch latest result from result table
     result = PhysicsResult.objects.filter(resultid=PhysicsResult.objects.latest('resultid').resultid,username = request.session['Email'])
     subject = 'Physics'
@@ -753,7 +772,7 @@ def resultp(request):
 #current test result for math here 
 def resultm(request):
     if 'Email' not in request.session.keys():
-        return HttpResponseRedirect('signin')
+        return render(request,'signin.html')
     # fetch latest result from result table
     result = MathResult.objects.filter(resultid=MathResult.objects.latest('resultid').resultid,username = request.session['Email'])
     subject = 'Math'
@@ -768,7 +787,7 @@ def resultm(request):
 #all results show throw this function of gs test
 def results(request):
     if 'Email' not in request.session.keys():
-        return HttpResponseRedirect('signin')
+        return render(request,'signin.html')
     # fetch all result from result table
     results = Result.objects.filter(username = request.session['Email'])
     subject = 'General Studies'
@@ -782,7 +801,7 @@ def results(request):
 #all results show throw this function of math test
 def resultsm(request):
     if 'Email' not in request.session.keys():
-        return HttpResponseRedirect('signin')
+        return render(request,'signin.html')
     # fetch all result from result table
     results = MathResult.objects.filter(username = request.session['Email'])
     subject = 'Math'
@@ -796,7 +815,7 @@ def resultsm(request):
 #all results show throw this function of physics test
 def resultsp(request):
     if 'Email' not in request.session.keys():
-        return HttpResponseRedirect('signin')
+        return render(request,'signin.html')
     # fetch all result from result table
     results = PhysicsResult.objects.filter(username = request.session['Email'])
     subject = 'Physics'
@@ -809,7 +828,7 @@ def resultsp(request):
 #all results show throw this function of Chemistry test
 def resultsc(request):
     if 'Email' not in request.session.keys():
-        return HttpResponseRedirect('signin')
+        return render(request,'signin.html')
     # fetch all result from result table
     results = ChemistryResult.objects.filter(username = request.session['Email'])
     subject = 'Chemistry'
