@@ -109,7 +109,7 @@ def signin(request):
             request.session['Email'] = candidate[0].srollno
             request.session['Pass'] = candidate[0].spass
             context = {'rollno':email}
-             return HttpResponseRedirect('home')
+            return HttpResponseRedirect('home')
         else:
             count=1
             context = {'student':passs,'yes':"Wrong Password or Email",'count':count}
