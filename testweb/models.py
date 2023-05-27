@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 class Student(models.Model):
-    srollno = models.CharField(max_length=10,primary_key=True)
+    srollno = models.CharField(max_length=50,primary_key=True)
     sname = models.CharField(max_length=50)
     sattempt = models.IntegerField(default=0)
     spoints = models.FloatField(default=0)
