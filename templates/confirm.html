@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+  <style>
+    :root {
+      --bg1: #e8eaec;
+      --text-color: #979797;
+      --color: #000;
+      --tcolor: rgb(119 119 119);
+    
+      --boxShadow: 7px 7px 15px #45566754, -8px -8px 15px rgb(81 101 121 / 4%),
+        inset -5px -4px 13px 0px rgb(81 101 121 / 35%),
+        inset 6px 7px 12px 0px rgb(255 255 255 / 94%);
+    
+      --boxShadow2: inset 4px 4px 8px rgb(189 200 213),
+        inset -4px -4px 8px rgb(255 255 255);
+    
+      --boxShadow3: inset 4px 4px 8px rgb(189 200 213),
+        inset -4px -4px 8px rgb(255 255 255);
+    
+      --sbShadow: 5px 5px 7px rgb(0 0 0 /25%),
+        inset 2px 2px 5px rgb(255 255 255 / 25%),
+        inset -3px -3px 5px rgb(0 0 0 / 12%);
+    }
+    
+    /* Background dark */
+    body.dark {
+      --bg1: #2f363e;
+      --text-color: rgb(255 208 0);
+      --color: #fff;
+      --tcolor: rgb(36, 6, 6);
+    
+      --boxShadow: 5px 5px 15px rgb(0, 0, 0, 0.25), 5px 15px 15px rgb(0, 0, 0, 0.25),
+        inset 5px 5px 10px rgb(0, 0, 0, 0.5),
+        inset 5px 5px 20px rgb(255, 255, 255, 0.2),
+        inset -5px -5px 15px rgb(0, 0, 0, 0.75);
+    
+      --boxShadow2: inset -3px -3px 6px rgb(73, 78, 83),
+        inset 3px 3px 6px rgb(32, 28, 28);
+    
+      --boxShadow2: -3px -3px 6px rgb(73, 78, 83), 3px 3px 6px rgb(32, 28, 28);
+    
+      --sbShadow: 5px 5px 7px rgb(0 0 0 /25%),
+        inset 2px 2px 5px rgb(255 255 255 / 25%),
+        inset -3px -3px 5px rgb(0 0 0 / 12%);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: serif;
+    }
+    
+  #Success{
+    background-color: #5ddc70;
+    height: 22px;
+    border-radius: 5px;
+  }
+  
+  
+    html,
+    body {
+      height: 100%;
+    }
+    
+    body {
+      display: grid;
+      place-items: center;
+      text-align: center;
+      background: var(--bg1);
+    }
+    
+    .content {
+      width: 385px;
+      background: var(--bg1);
+      box-shadow: var(--boxShadow);
+      border-radius: 20px;
+      padding: 60px 40px;
+      margin-top: 45px;
+    }
+    
+    .content .text {
+      font-size: 33px;
+      font-size: 600;
+      margin-bottom: 35px;
+      color: var(--color);
+    }
+    
+    .content .field {
+      height: 50px;
+      width: 100%;
+      display: flex;
+      position: relative;
+    }
+    
+    .field input {
+      height: 40px;
+      width: 100%;
+      padding-left: 50px;
+      font-size: 15px;
+      outline: none !important;
+      border: none;
+      background: var(bg1);
+      box-shadow: var(--boxShadow2);
+      border-radius: 25px;
+    }
+    
+    input:focus {
+      box-shadow: var(--boxShadow);
+    }
+    ::placeholder {
+      color: var(--tcolor);
+    }
+    
+    .field:nth-child(2) {
+      margin-top: 20px;
+    }
+    
+    .field:nth-child(3) {
+      margin-top: 20px;
+    }
+    
+    .field span {
+      position: absolute;
+      width: 50px;
+      line-height: 50px;
+      color: var(--tcolor);
+      font-size: 22px;
+    }
+    
+    button {
+      margin: 25px 0;
+      width: 80px;
+      height: 40px;
+      color: var(--color);
+      font-size: 18px;
+      font-weight: 600;
+      background: var(--bg1);
+      border: none;
+      outline: none;
+      cursor: pointer;
+      box-shadow: var(--boxShadow);
+      border-radius: 25px;
+    }
+    
+    button:focus {
+      color: #ff6100;
+      box-shadow: var(--boxShadow2);
+    }
+    
+    h4 {
+      font-size: 14px;
+      color: rgb(119 119 119);
+      margin: 0 0 16px 0;
+    }
+    
+    .social_icons {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+    }
+    
+    .social_icons i {
+      line-height: 50px;
+      height: 50px;
+      width: 50px;
+      color: #fff;
+      border-radius: 50%;
+      box-shadow: var(--sbShadow);
+      font-size: 28px;
+    }
+    
+    .foot {
+      margin: 20px auto;
+      color: rgb(119 119 119);
+    }
+    
+    .in {
+      color: #ff6100;
+      text-decoration: none;
+    }
+    
+    .in:hover {
+      text-decoration: underline;
+    }
+    
+    .social_icons i:nth-child(1) {
+      /* background-image: linear-gradient(315deg,#0078ff -7.64,#00c6ff 104.5%); */
+      background-image: linear-gradient(315deg, #0078ff, #00c6ff);
+    }
+    
+    .social_icons i:nth-child(1):hover {
+      color: #0078ff;
+      background-image: linear-gradient(
+        to bottom,
+        #e8eaec,
+        rgba(189, 200, 213, 0.795)
+      );
+      text-shadow: 2px 2px 3px #b8b9be, -2px -2px -2px #fff;
+    }
+    
+    .social_icons i:nth-child(2) {
+      /* background-image: linear-gradient(315deg,#4949e7 -6.1,#5eb2fc 101.5%); */
+      background-image: linear-gradient(315deg, #4949e7, #5eb2fc);
+    }
+    
+    .social_icons i:nth-child(2):hover {
+      color: #5662e9;
+      background-image: linear-gradient(
+        to bottom,
+        #e8eaec,
+        rgba(189, 200, 213, 0.795)
+      );
+      text-shadow: 2px 2px 3px #b8b9be, -2px -2px -2px #fff;
+    }
+    
+    .social_icons i:nth-child(3) {
+      /* background-image: linear-gradient(315deg,#02b7ff -7.64,#92cdfa 104.5%); */
+      background-image: linear-gradient(315deg, #02b7ff, #92cdfa);
+    }
+    
+    .social_icons i:nth-child(3):hover {
+      color: #00acee;
+      background-image: linear-gradient(
+        to bottom,
+        #e8eaec,
+        rgba(189, 200, 213, 0.795)
+      );
+      text-shadow: 2px 2px 3px #b8b9be, -2px -2px -2px #fff;
+    }
+    
+    .social_icons i:nth-child(4) {
+      /* background-image: linear-gradient(315deg,#02b7ff -7.64,#92cdfa 104.5%); */
+      background-image: linear-gradient(315deg, #b9215c, #de4882);
+    }
+    
+    .social_icons i:nth-child(4):hover {
+      color: #de4882;
+      background-image: linear-gradient(
+        to bottom,
+        #e8eaec,
+        rgba(189, 200, 213, 0.795)
+      );
+      text-shadow: 2px 2px 3px #b8b9be, -2px -2px -2px #fff;
+    }
+    
+    .dark-light {
+      left: 50px;
+      display: flex;
+      position: absolute;
+      justify-content: center;
+      align-items: center;
+      top: 50px;
+      width: 60px;
+      height: 60px;
+      box-shadow: var(--boxShadow);
+      border-radius: 50px;
+    }
+    
+    .dark-light i {
+      position: absolute;
+      color: var(--tcolor);
+      font-size: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .dark-light i.sun {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .dark-light.active i.sun {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    
+    .dark-light.active i.moon {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+  </style>
+  <title>Document</title>
+  <style>
+    .img{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        background:none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="content">
+    <div class="text">Password Changed</div>
+    <form action="{% url 'testweb:Forget' %}" method='post'>
+        {% csrf_token %}
+        {% if count %}
+          <p style="background-color:rgb(249, 85, 85); height:22px;
+          border-radius: 5px;">{{yes}}</p>
+        {% endif %}
+      <div class="field">
+        <img class='img' src="data:image/png;base64,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">
+      </div>
+    </form>
+
+  </div>
+  
+</body>
+
+</html> 
