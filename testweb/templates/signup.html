@@ -286,13 +286,27 @@
       opacity: 0;
       pointer-events: none;
     }
-    
+    .p{
+      color:green;
+      left: 10px;
+      display: flex;
+      position: absolute;
+      justify-content: center;
+      align-items: center;
+      top: 10px;
+      width: 50px;
+      height: 50px;
+      text-decoration:none;
+      box-shadow: var(--boxShadow);
+      border-radius: 50px;
+    }
   </style>
- 
-  <title>Signup</title>
+  {% comment %} <link rel="icon" href="{% static '1.png' %}"> {% endcomment %}
+  <title>Signup As Student</title>
 </head>
 
 <body>
+  <a href="{% url 'testweb:Front' %}" class='p'>Back</a>
   <div class="content">
     {% if success %}
       <p id='Success'>Successfully SignUp As Student!</p>

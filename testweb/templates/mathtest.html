@@ -128,7 +128,8 @@
     justify-content: center;
     background-color: rgb(0, 255, 255);
 }</style>
-  <title>Math Test</title>
+{% comment %} <link rel="icon" href="{% static '1.png' %}"> {% endcomment %}
+  <title>DashBoard</title>
   <script type='text/JavaScript'>
         function check(){
             option = document.querySelector('input[name=option]:checked').value 
@@ -305,5 +306,12 @@
         </form>
 
         <br> 
+        <script>
+          function preventBack() {
+            window.history.forward(); 
+            }
+           setTimeout(preventBack, 0);  
+        window.onunload = function () { null };
+        </script>
         </div>
 </body>

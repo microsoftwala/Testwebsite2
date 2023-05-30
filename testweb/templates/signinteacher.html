@@ -3,11 +3,27 @@
 <html>
   <head>
     <title>SignIn Page</title>
+    {% comment %} <link rel="icon" href="{% static '1.png' %}"> {% endcomment %}
     <style>
+      .p{
+        color:white;
+        left: 10px;
+        display: flex;
+        position: absolute;
+        justify-content: center;
+        align-items: center;
+        top: 10px;
+        width: 50px;
+        height: 50px;
+        text-decoration:none;
+        box-shadow: var(--boxShadow);
+        border-radius: 50px;
+      }
         body {
             background-color: transparent;
             background-image: url("https://cdn.pixabay.com/photo/2016/06/02/02/33/triangles-1430105_960_720.png");
-             background-size: cover;
+            background-size: cover;
+            height: 100%;
           }
           
           .login-page {
@@ -104,6 +120,7 @@
 
   </head>
   <body>
+    <a href="{% url 'testweb:Front' %}" class='p'>Back</a>
     <div class="login-page">
       <div class="avatar">
         <img src="https://cdn.pixabay.com/photo/2014/04/02/14/10/female-306407_960_720.png" alt="Avatar">
