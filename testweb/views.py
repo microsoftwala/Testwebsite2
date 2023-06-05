@@ -38,7 +38,7 @@ def signupteacher(request):
         name = request.POST['Name']
         email = request.POST['Email']
         password = request.POST['Pass']
-        subject = request.POST['Subject']
+        subject = request.POST['subject']
         password = make_password(password)
         
         if(len(Signup.objects.filter(srollno=email)) or len(TeacherSignup.objects.filter(empid=email))):
