@@ -3,8 +3,6 @@ import uuid
 from django.conf import settings
 
 def send_forget_password_mail(email,token):
-    # print(email)
-    # print(token)
     subject = 'Your Forget password link'
     message = f'Hi, click on the link to reset your password link will work 24 hours https://testapp-5wz1.onrender.com/changepassword/{token}/'
     email_form = settings.EMAIL_HOST_USER
