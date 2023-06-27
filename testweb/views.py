@@ -92,7 +92,7 @@ def signinteacher(request):
 
 
 
-#signin for student
+#signin for students
 def signin(request):
     passs = Signup.objects.all()
     count=0
@@ -153,7 +153,7 @@ def signup(request):
   
   
   
-#forget password  
+#forget password  for teacher
 def forget(request):
     if request.method =='POST':
         email = request.POST['Email']
@@ -185,7 +185,7 @@ def forget(request):
 
   
 
-#confirm password reset   
+#confirm password reset  student
 def confirm(request):
     object = Reset.objects.get(sid=Reset.objects.latest('sid').sid)
     
