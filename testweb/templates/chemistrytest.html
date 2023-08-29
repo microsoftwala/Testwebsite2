@@ -163,7 +163,8 @@
       
     var count = {{count}}
     var counter = 0
-    // var counter = +sessionStorage.getItem('counter') ?? 0
+    if( +sessionStorage.getItem('counter') != 0)
+      var counter = +sessionStorage.getItem('counter')
     if (count == 1){
       async function counters(){
           counter++
