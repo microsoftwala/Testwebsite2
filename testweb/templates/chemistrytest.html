@@ -163,10 +163,11 @@
       
     var count = {{count}}
     var counter = 0
+    var counter = +sessionStorage.getItem('counter') ?? 0
     if (count == 1){
       async function counters(){
           counter++
-
+          sessionStorage.setItem('counter', counter)
           if((30-counter)%60 > 9)
                document.getElementById('timer1').innerHTML = (30-counter)%60;
           else
@@ -201,6 +202,7 @@
     else if(count == 3){
       async function counters(){
         counter++
+        sessionStorage.setItem('counter', counter)
         console.log(counter)
         if((90-counter)%60>9)
             document.getElementById('timer1').innerHTML = (90-counter)%60;
@@ -235,7 +237,7 @@
     else if(count == 5){
       async function counters(){
         counter++
-
+        sessionStorage.setItem('counter', counter)
         if((150-counter)%60>9)
           document.getElementById('timer1').innerHTML = (150-counter)%60;
         else
@@ -268,6 +270,7 @@
     else if(count == 10){
       async function counters(){
         counter++
+        sessionStorage.setItem('counter', counter)
         if((300-counter)%60 > 9)
             document.getElementById('timer1').innerHTML = (300-counter)%60;
         else
